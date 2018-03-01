@@ -1,7 +1,7 @@
 import csv
 
 MODE = "a_example"
-
+function csv
 with open('data/'+MODE+'.in') as f:
     input_reader = csv.reader(f, delimiter=' ')
     (ROWS, COLUMNS, VH, RIDES, BONUS, STEPS) = (int(x) for x in next(input_reader))
