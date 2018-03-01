@@ -1,12 +1,24 @@
 import csv
 from namedlist import namedlist
 
-MODE = "a_example"
+MODE = "b_should_be_easy"
 
-"""DATA STRUCTURES"""
-Ride = namedlist('Ride', ['tIni', 'tFin', 'pIni', 'pFin', 'dist'])
+#DATA STRUCTURES
+Viaje = namedlist('Ride', ['tIni', 'tFin', 'pIni', 'pFin', 'dist'])
 Coche = namedlist('Coche', ['step', 'pActual', 'viajes'])
 
+def da_tiempo (coche, viaje):
+    if viaje.duration+coche.step+ distancia(coche.position, viaje.pFin) > viaje.tFin:
+        return False, 0, 0
+    else:
+        return True, viaje.duration, distancia(coche.position, viaje.pFin)
+
+def distancia(position1, position2):
+    x1, y1 = position1
+    x2, y2 = position2
+    return abs(x2 - x1) + abs(y2 - y1)
+
+#INPUT
 def input(MODE):
     with open('data/'+MODE+'.in') as f:
         input_reader = csv.reader(f, delimiter=' ')
@@ -14,13 +26,15 @@ def input(MODE):
 
         def create_ride(source):
             (xIn, yIn, xFin, yFin, tIni, tFin) = (int(x) for x in next(source))
-            return Ride(tIni=tIni, tFin=tFin, pIni=(xIn, yIn), pFin=(xFin, yFin))
+            return Viaje(tIni=tIni, tFin=tFin, pIni=(xIn, yIn), pFin=(xFin, yFin),
+                    dist=distancia((xIn, yIn), (xFin, yFin)))
 
-        rides = [ for line in input_reader]
+        rides = [create_ride(input_reader) for _ in range(RIDES)]
 
     return ROWS, COLUMNS, VH, RIDES, BONUS, STEPS, rides
 
-"""OUTPUT"""
+"""
+#OUTPUT
 def output(rides):
     with open("s_p.txt", 'w+') as out:
         i = 0
@@ -30,6 +44,5 @@ def output(rides):
             out.write(str(i)+" "+" ".join([str(i) for i in v])+"\n")
         out.close()
         print(i)
-
-
+"""
 print(input(MODE))
