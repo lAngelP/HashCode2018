@@ -33,7 +33,7 @@ def input(MODE):
 
     return ROWS, COLUMNS, VH, RIDES, BONUS, STEPS, rides
 
-"""
+
 #OUTPUT
 def output(rides):
     with open("s_p.txt", 'w+') as out:
@@ -44,5 +44,5 @@ def output(rides):
             out.write(str(i)+" "+" ".join([str(i) for i in v])+"\n")
         out.close()
         print(i)
-"""
+
 print(input(MODE))
