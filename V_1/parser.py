@@ -33,7 +33,6 @@ def input(MODE):
 
     return ROWS, COLUMNS, VH, RIDES, BONUS, STEPS, rides
 
-
 #OUTPUT
 def output(rides):
     with open("s_p.txt", 'w+') as out:
