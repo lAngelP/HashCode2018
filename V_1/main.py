@@ -6,12 +6,6 @@ Viaje = namedlist('Viaje', ['tIni', 'tFin', 'pIni', 'pFin', 'dist', 'numero'])
 Coche = namedlist('Coche', ['step', 'position', 'viajes'])
 
 
-def da_tiempo(coche, viaje):
-        if viaje.duration + coche.step + distancia(coche.position, viaje.pFin) > viaje.tFin:
-            return False, 0, 0
-        else:
-            return True, viaje.duration, distancia(coche.position, viaje.pFin)
-
 
 def distancia(position1, position2):
     x1, y1 = position1
@@ -51,8 +45,7 @@ def llega ( viaje, coche):
     return viaje.tFin >= viaje.dist + dist + coche.step
 
 
-def add_viaje (coche, viaje_list, coche_steps, i):
-    for viaje in viaje_list:
+def add_viaje (coche, viaje, i, viaje_list, coche_steps):
         if llega(viaje, coche):
             coche.viajes.append(viaje.numero)
             coche.step += viaje.dist+distancia(coche.position, viaje.pIni)
@@ -62,6 +55,7 @@ def add_viaje (coche, viaje_list, coche_steps, i):
             return
         else:
             viaje_list.remove(viaje)
+
 def main(MODE):
 
 
@@ -72,11 +66,18 @@ def main(MODE):
         coches[i] = create_coche()
     ride_sorted = sorted(rides, key=lambda ride: ride.tIni)
     while ride_sorted:
-        for i in range(VH):
-            if not ride_sorted:
-                break
-            add_viaje(coches[i], ride_sorted, coche_steps, i)
-            print(len(ride_sorted))
+        coche_distance = [distancia(ride_sorted[0].pIni, coche.position) for coche in coches]
+        coche_distance = [x+y for x, y in zip(coche_distance, coche_steps)]
+        coche_bonus = list(filter(lambda x: x == ride_sorted[0].tIni, coche_distance))
+        coche_bonus = sorted(coche_bonus)
+        if not coche_bonus:
+            i = coche_distance.index(min(coche_distance))
+        else:
+            i = coche_distance.index(coche_bonus[0])
+        if not ride_sorted:
+            break
+        add_viaje(coches[i], ride_sorted[0], i, ride_sorted, coche_steps)
+        print(len(ride_sorted))
     output(coches, MODE)
     print(MODE)
 
